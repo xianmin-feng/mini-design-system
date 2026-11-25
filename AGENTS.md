@@ -1,7 +1,9 @@
 # AGENTS.md — building UI with the Mini Design System
 
 Source of truth: `mini-ds-spec.md`. If this file and the spec disagree, the spec wins.
-Components today: `Button`, `TextField`, `RadioGroup`. If you need something else, compose it from existing components first; ask only if that's not possible. Don't invent a new component or restyle these.
+Components today: `Button`, `TextField`, `RadioGroup`. Don't invent a new component or restyle these.
+
+**Never force a component into a job it isn't designed for** (e.g., a TextField for choosing from fixed options). If the right component doesn't exist, stop and ask, and name the missing component.
 
 ## 1. Tokens only
 

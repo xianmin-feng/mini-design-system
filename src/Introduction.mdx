@@ -21,8 +21,6 @@ Built by **Xianmin (Mia) Feng** · [Source on GitHub](https://github.com/xianmin
 | **AGENTS.md** | A usage guide written for AI agents, kept in sync with the spec |
 | **Experiments** | The same prompt given to an AI agent with and without the guide |
 
-Every component passes the Storybook accessibility checks with zero violations.
-
 ---
 
 ## Principles
@@ -49,12 +47,14 @@ I gave an AI coding agent the same prompt three times: *"Build an Invite teammat
 |---|---|---|
 | **Invite A** | No guide | Invented a one-off radio group inside the page. It looked fine, but relied on browser defaults for hover, focus, and disabled states, read each option's label and description as one long name, and had no error or required support. |
 | **Invite B** | Guide v1: *"compose from existing components first"* | Followed the rule too literally and used a **text field** for a fixed choice. Users would have to type "Admin", "Member" or "Viewer". |
-| **Invite C** | Guide v2: *"never force a component into a job it isn't designed for — stop and name what's missing"* | **Stopped and asked**, naming the missing component (RadioGroup). After I specced and approved it, the form used the real system component, defaulting to the least-privilege role. |
+| **Invite C** | Rule v2, given as a standing instruction: *"never force a component into a job it isn't designed for — stop and name what's missing"* | **Stopped and asked**, naming the missing component (RadioGroup). After I specced and approved it, the form used the real system component, defaulting to the least-privilege role. |
+
+Rule v2 reached the agent through its project memory rather than AGENTS.md. It has since been added to AGENTS.md; a clean re-run through the guide alone is next.
 
 ### What I learned
 
 - **A design system's value is mostly invisible in a screenshot.** Invite A and Invite C look nearly identical. The difference is in the code: one is a one-off, the other is consistent, accessible, and maintainable.
-- **Rules need intent, not just constraints.** Guide v1 was obeyed exactly and still produced a bad result. The fix was explaining *why*, so the agent could recognize a bad fit.
+- **The same intent, worded vaguely vs. explicitly, produced opposite behavior.** Rules need to say why, not just what.
 - **AI failures reveal system gaps.** The agent getting stuck told me which component to build next. Watching where agents struggle is a way to measure what a design system is missing.
 
 ---
