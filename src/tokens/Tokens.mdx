@@ -1,0 +1,84 @@
+import { Meta, ColorPalette, ColorItem, Typeset } from '@storybook/addon-docs/blocks';
+import { colorGroups, toColorMap, tokensWithPrefix, tokenValue } from './tokens';
+import {
+  SpacingScale,
+  RadiusSamples,
+  ControlSizes,
+  AvatarSizes,
+  ElevationSamples,
+  TypeProperties,
+  MotionDurations,
+  EasingCurves,
+} from './TokenDocs';
+
+<Meta title="Foundations/Tokens" />
+
+# Tokens
+
+Every color, size and duration in the system comes from `src/tokens/tokens.css`. This page reads that file directly, so the names and values below are always the ones the components use.
+
+Tokens are named by purpose, not appearance: `--color-danger`, not `--red`.
+
+## Color
+
+<ColorPalette>
+  {colorGroups.map((group) => (
+    <ColorItem
+      key={group.title}
+      title={group.title}
+      subtitle={group.subtitle}
+      colors={toColorMap(group.tokens)}
+    />
+  ))}
+</ColorPalette>
+
+## Type
+
+The scale, set in `--font-sans`:
+
+<Typeset
+  fontSizes={tokensWithPrefix('--text-').map((token) => token.value)}
+  fontWeight={Number(tokenValue('--weight-regular'))}
+  fontFamily={tokenValue('--font-sans')}
+  sampleText="Design tokens are the single source of truth"
+/>
+
+Font family, weights and line heights:
+
+<TypeProperties sampleText="Design tokens are the single source of truth" />
+
+## Spacing
+
+A 4px base. Each bar is as wide as its token.
+
+<SpacingScale />
+
+## Radius
+
+<RadiusSamples />
+
+## Control sizes
+
+Shared heights keep Buttons and TextFields aligned in a row. The indicator size is the box of a radio.
+
+<ControlSizes />
+
+## Avatar sizes
+
+Avatar diameters, then the diameters of the status indicator.
+
+<AvatarSizes />
+
+## Elevation
+
+<ElevationSamples />
+
+## Motion
+
+Press Play to see each duration, eased with `--ease-out`. Under reduced motion the dot jumps instead of sliding.
+
+<MotionDurations />
+
+The easing curve: time runs left to right, progress bottom to top.
+
+<EasingCurves />

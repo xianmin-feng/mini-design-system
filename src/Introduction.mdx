@@ -40,6 +40,40 @@ Focus rings, motion timing, and reduced-motion behavior are specified like any o
 
 ---
 
+## What the agent reads
+
+The guide is a plain Markdown file, `AGENTS.md`, that the agent loads before it writes any UI. These lines are copied exactly from it ("…" marks where lines are skipped):
+
+```md
+**Never force a component into a job it isn't designed for** (e.g., a TextField for choosing from fixed options). If the right component doesn't exist, stop and ask, and name the missing component.
+
+…
+
+## 1. Tokens only
+
+- Every color, size, spacing, radius, font, shadow and duration comes from `src/tokens/tokens.css`.
+- Never hardcode a value: no hex colors, no `px` spacing, no `ms` durations.
+- Never add or rename a token yourself. If no token fits, stop and ask.
+- Pick tokens by purpose, not looks: `--color-danger` for errors, even if another token is the same shade.
+
+…
+
+## 2. Button
+
+…
+
+Rules:
+
+- Labels are verbs in sentence case: "Save changes", not "SAVE" or "Submit".
+- Danger labels name the action: "Delete project", never "OK" or "Yes".
+- Never use Button for navigation — use a link.
+- Icon-only buttons must have `aria-label` (TypeScript enforces this).
+- `type` defaults to `"button"`. Set `type="submit"` explicitly for a form's submit button.
+- `className` is for layout only (width, spacing). Never use it or `style` to change colors, height, radius or type.
+```
+
+---
+
 ## The experiment: does the guide change what AI builds?
 
 I gave an AI coding agent the same prompt three times: *"Build an Invite teammate form with name, email, role, and a send button, using the existing components."*

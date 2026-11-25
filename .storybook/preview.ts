@@ -6,7 +6,7 @@ const preview: Preview = {
     layout: 'centered',
     options: {
       storySort: {
-        order: ['Introduction', 'Components', 'Experiments'],
+        order: ['Introduction', 'Foundations', 'Components', 'Experiments'],
       },
     },
     a11y: {
