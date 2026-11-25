@@ -4,6 +4,11 @@ import '../src/tokens/tokens.css';
 const preview: Preview = {
   parameters: {
     layout: 'centered',
+    options: {
+      storySort: {
+        order: ['Introduction', 'Components', 'Experiments'],
+      },
+    },
     a11y: {
       // Report accessibility violations as failures, not just warnings.
       test: 'error',

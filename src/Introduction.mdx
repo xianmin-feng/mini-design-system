@@ -1,0 +1,64 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# Mini Design System
+
+A small design system built to explore one question: **how do you design a system that works equally well for humans and for AI agents building with it?**
+
+Built by **Xianmin (Mia) Feng** · [Source on GitHub](https://github.com/xianmin-feng/mini-design-system)
+
+---
+
+## What's here
+
+| | |
+|---|---|
+| **Tokens** | Color, spacing, type, radius, elevation, motion — named by purpose (`--color-danger`, not `--red`) |
+| **Button** | Primary, secondary, danger · two sizes · loading, disabled, keyboard focus |
+| **TextField** | Label, hint, error, required/optional marking · fully wired for screen readers |
+| **RadioGroup** | 2–5 fixed options with descriptions · native keyboard behavior |
+| **AGENTS.md** | A usage guide written for AI agents, kept in sync with the spec |
+| **Experiments** | The same prompt given to an AI agent with and without the guide |
+
+Every component passes the Storybook accessibility checks with zero violations.
+
+---
+
+## Principles
+
+**1. Tokens are the single source of truth.**
+No hardcoded colors, sizes, or durations in components. Change a token once, and every surface follows.
+
+**2. Native first, ARIA second.**
+Buttons are `<button>`, radios are native inputs in a `<fieldset>`. Keyboard and screen reader support come for free; ARIA only fills the gaps.
+
+**3. Encode intent, not just constraints.**
+Docs say *when not to use* a component, not only how to use it. Both people and AI read rules literally, so the reason has to be written down.
+
+**4. Craft is part of the spec.**
+Focus rings, motion timing, and reduced-motion behavior are specified like any other property, not left to polish later.
+
+---
+
+## The experiment: does the guide change what AI builds?
+
+I gave an AI coding agent the same prompt three times: *"Build an Invite teammate form with name, email, role, and a send button, using the existing components."*
+
+| | Setup | What the agent did |
+|---|---|---|
+| **Invite A** | No guide | Invented a one-off radio group inside the page. It looked fine, but relied on browser defaults for hover, focus, and disabled states, read each option's label and description as one long name, and had no error or required support. |
+| **Invite B** | Guide v1: *"compose from existing components first"* | Followed the rule too literally and used a **text field** for a fixed choice. Users would have to type "Admin", "Member" or "Viewer". |
+| **Invite C** | Guide v2: *"never force a component into a job it isn't designed for — stop and name what's missing"* | **Stopped and asked**, naming the missing component (RadioGroup). After I specced and approved it, the form used the real system component, defaulting to the least-privilege role. |
+
+### What I learned
+
+- **A design system's value is mostly invisible in a screenshot.** Invite A and Invite C look nearly identical. The difference is in the code: one is a one-off, the other is consistent, accessible, and maintainable.
+- **Rules need intent, not just constraints.** Guide v1 was obeyed exactly and still produced a bad result. The fix was explaining *why*, so the agent could recognize a bad fit.
+- **AI failures reveal system gaps.** The agent getting stuck told me which component to build next. Watching where agents struggle is a way to measure what a design system is missing.
+
+---
+
+## How it was built
+
+I made the design decisions — tokens, component specs, states, accessibility behavior, and usage rules — and used Claude Code as the implementation partner. When the agent hit gaps or contradictions in the spec, it flagged them, and I made the call. Those decisions are recorded in `mini-ds-spec.md`.
