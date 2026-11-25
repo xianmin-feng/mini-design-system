@@ -1,0 +1,97 @@
+.field {
+  --textfield-icon-size: var(--space-4);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--font-sans);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--control-height-md);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  /* 16px: iOS Safari zooms the page when focusing an input with smaller text. */
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.sm {
+  height: var(--control-height-sm);
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1; /* Firefox dims placeholders by default, which would break contrast. */
+}
+
+/* States. Hover steps aside for disabled, focus and error, so those always win. */
+
+.input:hover:not(:disabled, :focus, [aria-invalid='true']) {
+  border-color: var(--color-text-muted);
+}
+
+/* :focus, not :focus-visible — a text field shows focus on click too. */
+.input:focus {
+  border-color: var(--color-primary);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+/* After :focus on purpose: an error border stays red when focused; the ring stays --color-focus. */
+.input[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+.input:disabled {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+/* :has() also catches fields disabled by a parent <fieldset disabled>. */
+.field:has(.input:disabled) .label {
+  color: var(--color-text-muted);
+}
+
+/* Messages */
+
+.hint,
+.error {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.hint {
+  color: var(--color-text-muted);
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  color: var(--color-danger);
+}
+
+.errorIcon {
+  flex-shrink: 0;
+  width: var(--textfield-icon-size);
+  height: var(--textfield-icon-size);
+  /* Centres the icon on the first line of text, even when the message wraps. */
+  margin-top: calc((1em * var(--leading-normal) - var(--textfield-icon-size)) / 2);
+}

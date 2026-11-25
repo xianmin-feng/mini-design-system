@@ -1,0 +1,129 @@
+.button {
+  --button-spinner-size: var(--space-4);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: var(--control-height-md);
+  padding: 0 var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+/* Size */
+
+.sm {
+  height: var(--control-height-sm);
+  padding: 0 var(--space-3);
+}
+
+/* Variants: rest / hover / pressed. `:not(:disabled, .loading)` keeps disabled and loading buttons inert. */
+
+.primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+}
+.primary:hover:not(:disabled, .loading) {
+  background-color: var(--color-primary-hover);
+}
+.primary:active:not(:disabled, .loading) {
+  background-color: var(--color-primary-active);
+}
+
+.secondary {
+  background-color: var(--color-bg);
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+.secondary:hover:not(:disabled, .loading) {
+  background-color: var(--color-primary-subtle);
+}
+.secondary:active:not(:disabled, .loading) {
+  background-color: var(--color-primary-subtle);
+  border-color: var(--color-primary);
+}
+
+.danger {
+  background-color: var(--color-danger);
+  color: var(--color-text-on-primary);
+}
+.danger:hover:not(:disabled, .loading),
+.danger:active:not(:disabled, .loading) {
+  background-color: var(--color-danger-hover);
+}
+
+/* States */
+
+.button:active:not(:disabled, .loading) {
+  transform: scale(0.98);
+}
+
+/* :focus-visible = keyboard focus only; a mouse click never shows the ring. */
+.button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Loading: busy cursor; hover/press are already switched off via :not(.loading). */
+.loading {
+  cursor: progress;
+}
+
+/* Icon slot and spinner share one box size, so swapping them never changes width. */
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--button-spinner-size);
+  height: var(--button-spinner-size);
+}
+
+.spinner {
+  box-sizing: border-box;
+  width: var(--button-spinner-size);
+  height: var(--button-spinner-size);
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-full);
+  animation: spin var(--duration-loop) linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* Reduced motion: no transforms. The spinner fades instead of rotating. */
+@media (prefers-reduced-motion: reduce) {
+  .button:active:not(:disabled, .loading) {
+    transform: none;
+  }
+  .spinner {
+    animation: pulse calc(var(--duration-loop) * 2) ease-in-out infinite;
+  }
+}

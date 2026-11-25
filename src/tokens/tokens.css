@@ -1,0 +1,81 @@
+/*
+ * Design tokens — Mini Design System spec v0.1, section 1.
+ * Components use these only: no hardcoded colors, sizes, or durations.
+ * Names describe purpose, not appearance.
+ */
+
+:root {
+  /* Color */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f7f7f8;
+  --color-text: #18181b;
+  --color-text-muted: #63636b;
+  --color-text-on-primary: #ffffff;
+  --color-border: #e4e4e7;
+  --color-border-strong: #8e8e96;
+  --color-primary: #5b4cdb;
+  --color-primary-hover: #4b3cc4;
+  --color-primary-active: #3f31a8;
+  --color-primary-subtle: #efedfd;
+  --color-danger: #d92d20;
+  --color-danger-hover: #b42318;
+  --color-focus: #5b4cdb;
+
+  /* Spacing (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Sizing: shared heights for interactive controls (Button, TextField) */
+  --control-height-sm: 32px;
+  --control-height-md: 40px;
+  /* Box of a selection indicator (radio; later checkbox) */
+  --control-indicator-size: 16px;
+
+  /* Typography */
+  --font-sans: "Geist", system-ui, sans-serif;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.06);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.08);
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --duration-loop: 800ms;
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/*
+ * Reduced motion: color changes become instant. Zeroing the duration tokens
+ * here covers every transition built on them; components still remove their
+ * own transforms (e.g. Button's pressed scale), since a 0ms transform is
+ * still a jump in size. --duration-loop is left alone: looping indicators
+ * swap to a non-transform animation instead of stopping.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+  }
+}
