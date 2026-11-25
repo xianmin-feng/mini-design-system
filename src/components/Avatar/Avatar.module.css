@@ -1,0 +1,115 @@
+.avatar {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+}
+
+/* Size: avatar diameter, indicator diameter, initials font. */
+
+.sm {
+  --avatar-size: var(--avatar-size-sm);
+  --avatar-indicator-size: var(--avatar-indicator-size-sm);
+  font-size: var(--text-xs);
+}
+.md {
+  --avatar-size: var(--avatar-size-md);
+  --avatar-indicator-size: var(--avatar-indicator-size-md);
+  font-size: var(--text-xs);
+}
+.lg {
+  --avatar-size: var(--avatar-size-lg);
+  --avatar-indicator-size: var(--avatar-indicator-size-lg);
+  font-size: var(--text-sm);
+}
+.xl {
+  --avatar-size: var(--avatar-size-xl);
+  --avatar-indicator-size: var(--avatar-indicator-size-xl);
+  font-size: var(--text-lg);
+}
+
+/* Outer ring for overlapping stacks. A shadow, so it never changes the avatar's size. */
+.ring {
+  box-shadow: 0 0 0 2px var(--color-bg);
+}
+
+/* The round face: initials on a tint, with the photo (when there is one) on top. */
+.face {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  user-select: none;
+}
+
+.tint1 {
+  background-color: var(--avatar-tint-1);
+}
+.tint2 {
+  background-color: var(--avatar-tint-2);
+}
+.tint3 {
+  background-color: var(--avatar-tint-3);
+}
+.tint4 {
+  background-color: var(--avatar-tint-4);
+}
+.tint5 {
+  background-color: var(--avatar-tint-5);
+}
+
+/* Once the photo has loaded, the initials underneath are hidden, not just covered. */
+.initialsHidden {
+  visibility: hidden;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+ * Status indicator: bottom-right, overlapping the avatar's edge. The 2px
+ * cutout ring sits outside the indicator size; the --color-bg fill shows
+ * through each shape's cutout instead of the photo.
+ */
+.indicator {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--avatar-indicator-size);
+  height: var(--avatar-indicator-size);
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg);
+  box-shadow: 0 0 0 2px var(--color-bg);
+}
+
+.cutout {
+  fill: var(--color-bg);
+}
+
+.active {
+  color: var(--color-success);
+}
+.away {
+  color: var(--color-warning);
+}
+.busy {
+  color: var(--color-danger);
+}
+.inactive {
+  color: var(--color-text-muted);
+}

@@ -20,6 +20,14 @@
   --color-danger: #d92d20;
   --color-danger-hover: #b42318;
   --color-focus: #5b4cdb;
+  --color-success: #079455;
+  --color-warning: #dc6803;
+  /* Avatar initials backgrounds; --color-text is at least 15:1 on each */
+  --avatar-tint-1: #efedfd;
+  --avatar-tint-2: #e0f2fe;
+  --avatar-tint-3: #dcfae6;
+  --avatar-tint-4: #fef0c7;
+  --avatar-tint-5: #fce7f6;
 
   /* Spacing (4px base) */
   --space-1: 4px;
@@ -41,6 +49,16 @@
   --control-height-md: 40px;
   /* Box of a selection indicator (radio; later checkbox) */
   --control-indicator-size: 16px;
+  /* Avatar diameters */
+  --avatar-size-sm: 24px;
+  --avatar-size-md: 32px;
+  --avatar-size-lg: 40px;
+  --avatar-size-xl: 64px;
+  /* Avatar status indicator diameters (sm matches md so shapes stay legible) */
+  --avatar-indicator-size-sm: 10px;
+  --avatar-indicator-size-md: 10px;
+  --avatar-indicator-size-lg: 12px;
+  --avatar-indicator-size-xl: 16px;
 
   /* Typography */
   --font-sans: "Geist", system-ui, sans-serif;

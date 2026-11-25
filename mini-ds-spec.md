@@ -28,6 +28,13 @@ Names describe purpose, not appearance (`--color-danger`, not `--red`).
 | `--color-danger` | `#D92D20` | Destructive actions, error text/borders |
 | `--color-danger-hover` | `#B42318` | Danger hover / pressed |
 | `--color-focus` | `#5B4CDB` | Focus ring |
+| `--color-success` | `#079455` | Positive status, e.g. Avatar "active" (3.9:1 on white) |
+| `--color-warning` | `#DC6803` | Cautionary status, e.g. Avatar "away" (3.5:1 on white) |
+| `--avatar-tint-1` | `#EFEDFD` | Avatar initials background, purple (`--color-text` ≈ 15:1) |
+| `--avatar-tint-2` | `#E0F2FE` | Avatar initials background, blue |
+| `--avatar-tint-3` | `#DCFAE6` | Avatar initials background, green |
+| `--avatar-tint-4` | `#FEF0C7` | Avatar initials background, amber |
+| `--avatar-tint-5` | `#FCE7F6` | Avatar initials background, pink |
 
 ### Spacing (4px base)
 
@@ -42,6 +49,10 @@ Names describe purpose, not appearance (`--color-danger`, not `--red`).
 `--control-height-sm: 32px` · `--control-height-md: 40px` — shared heights for interactive controls (Button, TextField), so they line up in a row.
 
 `--control-indicator-size: 16px` — the box of a selection indicator (the radio in RadioGroup; later checkboxes).
+
+`--avatar-size-sm: 24px` · `--avatar-size-md: 32px` · `--avatar-size-lg: 40px` · `--avatar-size-xl: 64px` — Avatar diameters.
+
+`--avatar-indicator-size-sm: 10px` · `--avatar-indicator-size-md: 10px` · `--avatar-indicator-size-lg: 12px` · `--avatar-indicator-size-xl: 16px` — Avatar status indicator diameters.
 
 ### Typography
 
@@ -293,7 +304,79 @@ Default (preselected) · With descriptions · No selection (required) · With hi
 
 ---
 
-## 5. Next up (not yet specced)
+## 5. Avatar
+
+Profile image with initials fallback and an optional status indicator.
+
+### API
+
+```ts
+name: string                                   // required — used for alt text, initials, and accessible label
+src?: string                                   // photo URL; falls back to initials if missing or fails to load
+size?: 'sm' | 'md' | 'lg' | 'xl'               // default 'md'
+status?: 'active' | 'away' | 'busy' | 'inactive'  // omit for no indicator
+ring?: boolean                                 // default false — outer ring for stacked/overlapping avatars
+decorative?: boolean                           // default false — true when the name is already shown as text next to it
+```
+
+### Sizes
+
+| size | Avatar | Indicator | Initials font |
+|---|---|---|---|
+| sm | 24px | 10px | `--text-xs` |
+| md | 32px | 10px | `--text-xs` |
+| lg | 40px | 12px | `--text-sm` |
+| xl | 64px | 16px | `--text-lg` |
+
+The avatar is a circle (`--radius-full`); a photo fills it (`object-fit: cover`).
+Indicator is positioned bottom-right, overlapping the edge. sm uses the same 10px indicator as md so the status shapes stay legible.
+New tokens: `--avatar-size-sm/md/lg/xl`, `--avatar-indicator-size-sm/md/lg/xl`, `--avatar-tint-1` to `-5`.
+
+### Status indicator
+
+| status | Color | Shape (so meaning never relies on color alone) |
+|---|---|---|
+| active | `--color-success` (new token, green, ≥3:1 on white) | filled circle |
+| away | `--color-warning` (new token, amber, ≥3:1 on white) | filled circle with a moon cutout (crescent) |
+| busy | `--color-danger` | filled circle with a horizontal bar (minus) |
+| inactive | `--color-text-muted` | hollow ring |
+
+- Every indicator has a 2px cutout ring in `--color-bg`, so it stays visible on any photo. The ring sits outside the indicator size (a 10px indicator is 14px overall).
+- Shapes are drawn in SVG inside the indicator; they scale with size.
+
+### Initials fallback
+
+- Shown when `src` is missing or the image fails to load (`onError`). They also show while the photo is loading; once it has loaded, the initials layer is hidden (`visibility: hidden`), not just covered.
+- Initials: first letter of the first and last word of `name`, uppercased ("Mia Feng" → "MF"; "Mia" → "M").
+- CJK names (written only in Chinese, Japanese or Korean characters): the last two characters of the name instead ("李小龙" → "小龙"; a two-character name like "王芳" shows both).
+- At `sm`, only one character is shown, so the indicator doesn't crowd it: the first character of `name` ("Mia Feng" → "M"), or for CJK names the last character ("李小龙" → "龙"), in line with the larger sizes.
+- Mixed-script names (e.g. "李 Bruce") are not treated as CJK and follow the default rule ("李B"; "李" at `sm`).
+- Background picked deterministically from `name` (same person, same color every time) from five tokenized tints, `--avatar-tint-1` to `-5`. Initials use `--color-text`, medium weight, which is at least 15:1 on every tint (4.5:1 required).
+
+### Ring
+
+- `ring` adds a 2px `--color-bg` outer ring, for avatar stacks where avatars overlap.
+
+### Accessibility
+
+- Not decorative: the avatar exposes one accessible name combining name and status, e.g. `"Mia Feng, busy"` (`role="img"` + `aria-label` on the wrapper; the inner `<img>` gets `alt=""` so it isn't read twice).
+- Decorative (`decorative`): wrapper is `aria-hidden="true"`. Use when the name is already visible next to the avatar — otherwise screen readers hear the name twice. If status matters in that context, show it as text too.
+- Status is never color-only: shape differs per status, and the label includes the status word.
+
+### Usage rules (also go into AGENTS.md)
+
+- Always pass `name`, even with a photo — it powers alt text, initials, and the fallback.
+- Use `decorative` when the person's name is printed right beside the avatar.
+- Only show `status` where presence matters (chat, collaborators). Don't add it everywhere.
+- Use `ring` only for overlapping stacks.
+
+### Stories to build
+
+Photo · Initials · Broken image (falls back to initials) · All sizes · All statuses · With ring (overlapping stack of 4) · Decorative next to a name · Long/single-word names (incl. CJK: "李小龙", "王芳")
+
+---
+
+## 6. Next up (not yet specced)
 
 - Card
 - Tokens showcase page in Storybook

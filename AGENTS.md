@@ -1,7 +1,7 @@
 # AGENTS.md — building UI with the Mini Design System
 
 Source of truth: `mini-ds-spec.md`. If this file and the spec disagree, the spec wins.
-Components today: `Button`, `TextField`, `RadioGroup`. Don't invent a new component or restyle these.
+Components today: `Button`, `TextField`, `RadioGroup`, `Avatar`. Don't invent a new component or restyle these.
 
 **Never force a component into a job it isn't designed for** (e.g., a TextField for choosing from fixed options). If the right component doesn't exist, stop and ask, and name the missing component.
 
@@ -14,11 +14,12 @@ Components today: `Button`, `TextField`, `RadioGroup`. Don't invent a new compon
 
 | Need | Tokens |
 |---|---|
-| Color | `--color-bg`, `-bg-subtle`, `-text`, `-text-muted`, `-text-on-primary`, `-border`, `-border-strong`, `-primary` (`-hover`, `-active`, `-subtle`), `-danger` (`-hover`), `-focus` |
+| Color | `--color-bg`, `-bg-subtle`, `-text`, `-text-muted`, `-text-on-primary`, `-border`, `-border-strong`, `-primary` (`-hover`, `-active`, `-subtle`), `-danger` (`-hover`), `-focus`, `-success`, `-warning` |
 | Spacing | `--space-1` 4 · `-2` 8 · `-3` 12 · `-4` 16 · `-5` 20 · `-6` 24 · `-8` 32 |
 | Radius | `--radius-sm` · `-md` (default) · `-lg` (cards) · `-full` |
 | Control height | `--control-height-sm` 32 · `-md` 40 |
 | Selection indicator | `--control-indicator-size` 16 (radio box) |
+| Avatar only | `--avatar-size-*`, `--avatar-indicator-size-*`, `--avatar-tint-1`…`-5` — used inside Avatar; don't use them elsewhere |
 | Type | `--font-sans` · `--text-xs` 12 · `-sm` 14 · `-md` 16 · `-lg` 20 · `-xl` 24 · `--weight-regular` · `-medium` · `-semibold` · `--leading-tight` · `-normal` |
 | Shadow | `--shadow-sm` · `-md` |
 | Motion | `--duration-fast` (hover, press) · `-normal` (appear, expand) · `-loop` (spinners) · `--ease-out` |
@@ -147,10 +148,43 @@ Rules:
 />
 ```
 
-## 5. Before you finish
+## 5. Avatar
+
+`import { Avatar } from './components/Avatar';`
+
+A person's photo, with initials as the fallback and an optional status indicator. It is not interactive.
+
+| Prop | Use it when |
+|---|---|
+| `name` (required) | Always, even with a photo. It gives the accessible label, the initials and the fallback color. |
+| `src` | You have a photo URL. If it is missing or fails to load, initials show instead. |
+| `size` | `sm` 24 dense lists · `md` 32 (default) · `lg` 40 · `xl` 64 profile headers. |
+| `status` | Presence matters here (chat, collaborators): `active`, `away`, `busy`, `inactive`. |
+| `ring` | Avatars overlap in a stack. |
+| `decorative` | The person's name is printed right beside the avatar. |
+
+Rules:
+
+- Always pass the person's full `name`, in its original script. Never pass initials yourself, and never build your own initials fallback — Avatar handles it: "Mia Feng" → "MF", CJK names show their last two characters ("李小龙" → "小龙"), and `sm` shows a single character ("M"; "龙").
+- Use `decorative` when the name is visible next to the avatar — otherwise screen readers hear it twice. If status matters there, show it as text too, because a decorative avatar hides its status from screen readers.
+- Only show `status` where presence matters. Don't add it everywhere.
+- Use `ring` only for overlapping stacks.
+- Don't use Avatar for logos, teams or anything that isn't a person, and don't make it clickable itself — wrap it in a link if it leads to a profile.
+- `className` is for layout only. Don't restyle size, shape, colors or the indicator.
+
+```tsx
+<div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+  <Avatar name="Mia Feng" src={user.photoUrl} decorative />
+  <span>Mia Feng</span>
+</div>
+
+<Avatar name="Mia Feng" src={user.photoUrl} status="busy" /> {/* read as "Mia Feng, busy" */}
+```
+
+## 6. Before you finish
 
 - [ ] No hardcoded colors, sizes or durations anywhere in what you wrote.
 - [ ] Exactly one `primary` Button in the view.
-- [ ] Every TextField and RadioGroup has a `label`; every icon-only Button has an `aria-label`.
+- [ ] Every TextField and RadioGroup has a `label`; every Avatar has a `name`; every icon-only Button has an `aria-label`.
 - [ ] Labels and error messages follow the wording rules above.
 - [ ] New UI has a Storybook story and passes the Accessibility panel with no violations.
